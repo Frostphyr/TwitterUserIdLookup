@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2018 Frostphyr
  *
@@ -31,19 +32,13 @@ if (property_exists($result, 'id')) {
     $response['id'] = $result->id;
 } else if (property_exists($result, 'errors')) {
     foreach ($result->errors as $error) {
-        $code = $error->code;
-        if ($code == 50) {
-            $response['error'] = 'User not found';
-            break;
-        } else if ($code == 63) {
-            $response['error'] = 'User is suspended';
-            break;
-        }
+        $response['error_code'] = $error->code;
+        break;
     }
 }
 
 if (!isset($response['id']) && !isset($response['error'])) {
-    $response['error'] = 'Error validating username';
+    $response['error_code'] = -1;
     error_log(json_encode($result));
 }
 

@@ -22,10 +22,8 @@ The request is a standard HTTP request to `lookup_twitter_user_id.php` with a si
 
 The response will be sent in JSON format. If successful, the response will be a single name/value pair named `id` with the user ID as a long. For example, for the user TwitterDev, this is the response:
 
-`{"id":2244994945}`
+`{"id": 2244994945}`
 
-If the ID was not able to be found, it will instead respond with a single name/value pair with the name `error` with one of the following strings:
+If the ID was not able to be found for any reason, it will instead respond with a single name/value pair named `error_code` and an integer indicating the error that occurred. The possible error codes can be found [here](https://developer.twitter.com/en/docs/basics/response-codes.html). For example, if the user is suspended, this is the response:
 
-* "User not found"
-* "User is suspended"
-* "Error validating username"
+`{"error_code": 63}`
