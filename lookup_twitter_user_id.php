@@ -1,3 +1,4 @@
+<?php
 
 /*
  * Copyright 2018 Frostphyr
@@ -14,8 +15,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-<?php
 
 require "vendor/autoload.php";
 use Abraham\TwitterOAuth\TwitterOAuth;
@@ -37,7 +36,7 @@ if (property_exists($result, 'id')) {
     }
 }
 
-if (!isset($response['id']) && !isset($response['error'])) {
+if (!isset($response['id']) && !isset($response['error_code'])) {
     $response['error_code'] = -1;
     error_log(json_encode($result));
 }
