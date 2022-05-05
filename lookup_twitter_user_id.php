@@ -24,21 +24,20 @@ include "twitter_tokens.php";
 $username = filter_input(INPUT_GET, 'username');
 
 $connection = new TwitterOAuth($consumer_key, $consumer_secret, $access_token, $access_token_secret);
-$result = $connection->get('users/show', ['screen_name' => $username, 'include_entities' => 'false']);
+try {
+    $result = $connection->get('users/show', ['screen_name' => $username, 'include_entities' => 'false']);
+} catch (TwitterOAuthException $e) {
+    error_log($e->getMessage());
+}
 
-$response;
 if (property_exists($result, 'id')) {
     $response['id'] = $result->id;
 } else if (property_exists($result, 'errors')) {
-    foreach ($result->errors as $error) {
-        $response['error_code'] = $error->code;
-        break;
-    }
+    $response['error_code'] = $result->errors[0]->code;
 }
 
 if (!isset($response['id']) && !isset($response['error_code'])) {
     $response['error_code'] = -1;
-    error_log(json_encode($result));
 }
 
 echo json_encode($response);
